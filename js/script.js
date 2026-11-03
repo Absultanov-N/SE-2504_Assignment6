@@ -78,13 +78,15 @@ $(document).ready(function () {
 
         // Clear previous highlights
         $faqContainer.find('mark.highlight').each(function () {
-            $(this).replaceWith($(this).text());
+            this.replaceWith(document.createTextNode(this.textContent));
+        });
+        $faqContainer.find('.faq-question, .faq-answer, .accordion-button, .accordion-body').each(function () {
+            this.normalize();
         });
 
         if (keyword.length > 0) {
             // Escape user input so characters such as (, [, *, and \\ are treated literally.
             const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            const regex = new RegExp(`(${escapedKeyword})`, 'gi');
             $faqContainer.find('.faq-question, .faq-answer, .accordion-button, .accordion-body').each(function () {
                 // Highlight only text nodes; do not rewrite HTML attributes or nested markup.
                 const walker = document.createTreeWalker(this, NodeFilter.SHOW_TEXT, {
@@ -99,8 +101,8 @@ $(document).ready(function () {
                 while (walker.nextNode()) textNodes.push(walker.currentNode);
 
                 textNodes.forEach(node => {
+                    const regex = new RegExp(`(${escapedKeyword})`, 'gi');
                     if (!regex.test(node.nodeValue)) {
-                        regex.lastIndex = 0;
                         return;
                     }
                     regex.lastIndex = 0;
@@ -167,13 +169,104 @@ $(document).ready(function () {
     $(window).trigger('scroll');
 
     // Task 6: Loading Spinner on Submit (Forms)
+    const $contactForm = $('#contactForm');
+    const $contactSteps = $contactForm.find('.form-step');
+    let activeContactStep = 0;
+
+    function showContactStep(step) {
+        activeContactStep = step;
+        $contactSteps.each(function (index) {
+            const isActive = index === activeContactStep;
+            $(this).toggleClass('is-active', isActive).attr('aria-hidden', String(!isActive));
+        });
+        $('#formStatus').text(
+            activeContactStep === 0
+                ? 'Step 1 of 2: Enter your name and email.'
+                : 'Step 2 of 2: Create and confirm your password.'
+        );
+    }
+
+    function validateContactFields($fields) {
+        let isValid = true;
+        $fields.each(function () {
+            const $field = $(this);
+            const errorId = $field.attr('aria-describedby');
+            const $error = errorId ? $('#' + errorId) : $();
+            let message = '';
+
+            if (this.validity.valueMissing) {
+                message = 'This field is required.';
+            } else if (this.validity.typeMismatch) {
+                message = 'Enter a valid email address.';
+            } else if (this.id === 'password' && this.value.length < 6) {
+                message = 'Password must be at least 6 characters.';
+            } else if (this.validity.customError) {
+                message = this.validationMessage;
+            }
+
+            if (message) {
+                isValid = false;
+                $field.addClass('is-invalid');
+                $error.text(message).addClass('d-block');
+            } else {
+                $field.removeClass('is-invalid');
+                $error.text('').removeClass('d-block');
+            }
+        });
+        if (!isValid) {
+            const invalidField = $fields.filter(function () {
+                return !this.validity.valid;
+            }).first()[0];
+            if (invalidField) {
+                invalidField.focus();
+            }
+        }
+        return isValid;
+    }
+
+    $('#contactNextBtn').on('click', function () {
+        if (validateContactFields($contactSteps.eq(0).find(':input'))) {
+            showContactStep(1);
+        }
+    });
+
+    $('#contactBackBtn').on('click', function () {
+        showContactStep(0);
+    });
+
+    $('#confirmPassword').on('input', function () {
+        const $field = $(this);
+        const isMismatch = this.value && this.value !== $('#password').val();
+        this.setCustomValidity(isMismatch ? 'Passwords do not match.' : '');
+        $field.toggleClass('is-invalid', Boolean(isMismatch));
+        $('#confirmPasswordError')
+            .text(isMismatch ? 'Passwords do not match.' : '')
+            .toggleClass('d-block', Boolean(isMismatch));
+    });
+
+    $('#password').on('input', function () {
+        $('#confirmPassword').trigger('input');
+    });
+
     $('#subscriptionForm, #contactForm').on('submit', function (e) {
         e.preventDefault();
         const $form = $(this);
+
+        if (this.id === 'contactForm') {
+            const $fields = $form.find('.form-step.is-active :input');
+            if (!validateContactFields($fields)) {
+                return;
+            }
+        }
         
         // Native browser check for validity if standard fields exist
         if (this.checkValidity && !this.checkValidity()) {
-            this.reportValidity();
+            const $invalidField = $form.find(':input').filter(function () {
+                return !this.validity.valid;
+            }).first();
+            if ($invalidField.length) {
+                $invalidField[0].focus();
+            }
             return;
         }
 
@@ -192,10 +285,77 @@ $(document).ready(function () {
             showToast("Form submitted successfully!");
             $form[0].reset();
 
+            if ($form.is('#contactForm')) {
+                showContactStep(0);
+            }
             if ($('#subscriptionModal').is(':visible')) {
                 closeModal();
             }
         }, 1800);
+    });
+
+    // Heritage sound button
+    let heritageSound = null;
+    $('#soundEffectBtn').on('click', function () {
+        const $button = $(this);
+        if (!heritageSound) {
+            heritageSound = new Audio('audio/ki-shashu.mp3');
+        }
+
+        if (heritageSound.paused) {
+            heritageSound.play()
+                .then(function () {
+                    $button.text('Stop Heritage Sound').attr('aria-pressed', 'true');
+                })
+                .catch(function () {
+                    showToast('Unable to play the heritage sound.');
+                });
+        } else {
+            heritageSound.pause();
+            heritageSound.currentTime = 0;
+            $button.text('Play Heritage Sound').attr('aria-pressed', 'false');
+        }
+    });
+
+    if ($('#contactForm').length) {
+        showContactStep(0);
+    }
+
+    // Gallery audio player
+    const $heritageAudio = $('#heritageAudio');
+    const $heritageTrackSelect = $('#heritageTrackSelect');
+    const $heritageAudioStatus = $('#heritageAudioStatus');
+
+    function setHeritageAudioSource() {
+        if (!$heritageAudio.length || !$heritageTrackSelect.length) return;
+        const source = $heritageTrackSelect.val();
+        if ($heritageAudio.attr('src') !== source) {
+            $heritageAudio.attr('src', source);
+        }
+    }
+
+    $heritageTrackSelect.on('change', function () {
+        setHeritageAudioSource();
+        $heritageAudio[0].pause();
+        $heritageAudioStatus.text('Track selected. Press play to listen.');
+    });
+
+    $('#heritagePlayBtn').on('click', function () {
+        setHeritageAudioSource();
+        $heritageAudio[0].play()
+            .then(function () {
+                $heritageAudioStatus.text('Playing selected track.');
+            })
+            .catch(function () {
+                $heritageAudioStatus.text('Unable to play this track.');
+            });
+    });
+
+    $('#heritageStopBtn').on('click', function () {
+        if (!$heritageAudio.length) return;
+        $heritageAudio[0].pause();
+        $heritageAudio[0].currentTime = 0;
+        $heritageAudioStatus.text('Playback stopped.');
     });
 
 

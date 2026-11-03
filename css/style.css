@@ -386,6 +386,10 @@ h3 {
     will-change: max-height, opacity;
 }
 
+.form-step[aria-hidden="true"] {
+    display: none;
+}
+
 .subscription-modal {
     position: fixed;
     inset: 0;
