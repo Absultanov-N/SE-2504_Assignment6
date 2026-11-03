@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qazaq Heritage - Home</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Task 0: CDN jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Основной скрипт -->
+    <script src="js/script.js" defer></script>
+</head>
+<body>
+
+    <!-- Task 4: Scroll Progress Bar -->
+    <div id="scrollProgressBar" style="position: fixed; top: 0; left: 0; height: 5px; background: linear-gradient(90deg, #0d6efd, #0dcaf0, #ffc107); width: 0%; z-index: 9999; transition: width 0.1s ease;"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center fw-bold" href="index.html">
+                <img src="images/brand-logo.png" alt="Qazaq Heritage emblem" width="40" height="40" class="brand-logo me-2">
+                Qazaq Heritage
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto gap-lg-2">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="heritage.html">Heritage</a></li>
+                    <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <button id="openModalBtn" type="button" class="btn btn-primary ms-lg-3 mt-2 mt-lg-0" aria-haspopup="dialog" aria-controls="subscriptionModal">Subscribe</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="py-5 bg-light border-bottom text-center">
+        <div class="container my-4">
+            <h1 class="display-4 fw-bold">Explore the Rich Culture of Kazakhstan</h1>
+            <p class="lead text-muted">Discover historical monuments, nomadic traditions, and breathtaking landscapes.</p>
+            
+            <!-- Task 1 & Task 2: Live Search with Autocomplete -->
+            <div class="position-relative mx-auto my-4" style="max-width: 500px;">
+                <input type="text" id="searchInput" class="form-control form-control-lg shadow-sm" placeholder="🔍 Search monuments, yurts, canyons..." autocomplete="off">
+                <ul id="suggestionBox" class="list-group position-absolute w-100 shadow mt-1 text-start" style="display:none; z-index:1000; max-height:200px; overflow-y:auto;"></ul>
+            </div>
+
+            <!-- Task 8: Copy Link Button -->
+            <div class="d-inline-flex align-items-center gap-2 bg-white border p-2 rounded-pill shadow-sm">
+                <small class="text-muted px-2 copy-text">https://toleumuratovaaisamal-ux.github.io/qazaq-heritage-assignment6/</small>
+                <button class="btn btn-outline-primary btn-sm rounded-pill copy-btn" type="button">Copy Site Link</button>
+            </div>
+            
+            <div class="mt-3">
+                <a href="heritage.html" class="btn btn-primary btn-lg rounded-pill">Start Exploring</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Task 5: Animated Number Counter Section -->
+    <section id="statsSection" class="py-4 bg-white border-bottom text-center">
+        <div class="container">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <h2 class="stat-number fw-bold display-5 text-primary" data-count="1500">0</h2>
+                    <p class="text-muted mb-0">Years of History</p>
+                </div>
+                <div class="col-md-4">
+                    <h2 class="stat-number fw-bold display-5 text-primary" data-count="50">0</h2>
+                    <p class="text-muted mb-0">Monuments Archived</p>
+                </div>
+                <div class="col-md-4">
+                    <h2 class="stat-number fw-bold display-5 text-primary" data-count="10000">0</h2>
+                    <p class="text-muted mb-0">Active Explorers</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Cards -->
+    <main class="container my-5">
+        <div class="row g-4" id="cardsContainer">
+            <div class="col-md-6 heritage-card-item">
+                <div class="card h-100 shadow-sm border-0">
+                    <!-- Task 9: Lazy Loading Image -->
+                    <img data-src="images/yasawi.jpg" class="card-img-top home-featured-image lazy-img" alt="Mausoleum of Khoja Ahmed Yasawi" style="height: 250px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Historical Monuments</h5>
+                        <p class="card-text text-muted">Learn about ancient architecture such as the Mausoleum of Khoja Ahmed Yasawi in Turkistan.</p>
+                        <a href="heritage.html" class="btn btn-outline-primary rounded-pill">Learn more →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 heritage-card-item">
+                <div class="card h-100 shadow-sm border-0">
+                    <!-- Task 9: Lazy Loading Image -->
+                    <img data-src="images/burabay.jpg" class="card-img-top home-featured-image lazy-img" alt="Burabay landscape" style="height: 250px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Sacred Nature</h5>
+                        <p class="card-text text-muted">Explore the majestic lakes, mountains, and natural heritage sites across Kazakhstan.</p>
+                        <a href="gallery.html" class="btn btn-outline-primary rounded-pill">View Gallery →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 3: FAQ with Live Search Highlighting -->
+        <section class="faq-container my-5 p-4 bg-light rounded-4 border">
+            <h3 class="fw-bold mb-3">Frequently Asked Questions</h3>
+            <div class="mb-3">
+                <input type="text" id="faqSearchInput" class="form-control" placeholder="Type to search and highlight in FAQ...">
+            </div>
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item border-0 mb-2">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            What is Qazaq Heritage?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            Qazaq Heritage is an educational web platform created to celebrate and share Kazakhstan's history, traditions, and cultural monuments.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item border-0 mb-2">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            Where are these sites located?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            Historical monuments and sacred natural locations are situated all across Kazakhstan, including Turkistan, Almaty region, Burabay, and Mangystau.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Cultural audio player -->
+    <section class="heritage-audio-player container my-4 p-4 rounded-4 shadow-sm" aria-labelledby="heritageAudioTitle">
+        <div class="row align-items-center g-3">
+            <div class="col-12 col-md">
+                <p class="eyebrow mb-1">Sounds of tradition</p>
+                <h2 id="heritageAudioTitle" class="h4 mb-1">Kazakh Cultural Audio</h2>
+                <p class="audio-description mb-0">Listen to selected cultural audio. Choose a track, then press play.</p>
+            </div>
+            <div class="col-12 col-md-auto audio-controls">
+                <label class="visually-hidden" for="heritageTrackSelect">Choose audio track</label>
+                <select id="heritageTrackSelect" class="form-select mb-2">
+                    <option value="audio/ki-shashu.mp3">Ki Shashu — celebratory tradition</option>
+                    <option value="audio/lullaby-by-the-fire.mp3">Lullaby by the Fire</option>
+                </select>
+                <div class="d-flex flex-wrap gap-2">
+                    <button id="heritagePlayBtn" class="btn btn-primary" type="button">Play Music</button>
+                    <button id="heritageStopBtn" class="btn btn-outline-secondary" type="button">Stop</button>
+                </div>
+                <p id="heritageAudioStatus" class="small mt-2 mb-0" role="status" aria-live="polite">Ready to play.</p>
+                <audio id="heritageAudio" preload="none"></audio>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dynamic Date/Time & Controls -->
+    <div class="text-center py-3 bg-light border-top">
+        <p class="mb-2 text-muted">Current Date & Time: <span id="dateTimeDisplay" class="fw-bold"></span></p>
+        <button id="changeBgBtn" class="btn btn-outline-secondary btn-sm" type="button">Change Theme Color</button>
+        <button id="themeToggleBtn" class="btn btn-outline-dark btn-sm ms-1" type="button" aria-pressed="false">Switch to Night Mode</button>
+        <button id="interfaceSoundsToggleBtn" class="btn btn-outline-secondary btn-sm ms-1" type="button" aria-pressed="false">Interface Sounds OFF</button>
+        <button id="soundEffectBtn" class="btn btn-outline-primary btn-sm ms-1" type="button" aria-pressed="false">Play Heritage Sound</button>
+    </div>
+
+    <!-- Modal Popup -->
+    <div id="subscriptionModal" class="subscription-modal" role="dialog" aria-modal="true" aria-labelledby="subscriptionTitle" aria-hidden="true">
+        <div class="subscription-modal-content bg-white p-4 rounded shadow" role="document">
+            <button id="closeModalBtn" type="button" class="subscription-modal-close" aria-label="Close subscription form">×</button>
+            <h4 id="subscriptionTitle">Subscribe to Newsletter</h4>
+            <p class="text-muted">Get updates on Qazaq Heritage projects.</p>
+            <form id="subscriptionForm">
+                <label for="subscriptionEmail" class="form-label">Email address</label>
+                <input id="subscriptionEmail" name="email" type="email" class="form-control mb-3" placeholder="Enter your email" required>
+                <!-- Task 6: Spinner on Submit -->
+                <button type="submit" class="btn btn-success w-100">Subscribe</button>
+                <p id="subscriptionStatus" class="mt-2 mb-0" role="status" aria-live="polite"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 bg-dark text-white text-center">
+        <div class="container">
+            <p class="mb-0">© 2026 Qazaq Heritage. Group SE-2504.</p>
+            <small class="text-white-50">Created by Toleumuratova Aisamal and Absultanov Nurdaulet</small>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
