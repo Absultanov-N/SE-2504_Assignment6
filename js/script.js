@@ -436,6 +436,7 @@ $(document).ready(function () {
             const dataSrc = $img.attr('data-src');
 
             if (!dataSrc) return;
+            if ($img.closest('.carousel-item').length && !$img.closest('.carousel-item').hasClass('active')) return;
 
             const imageTop = $img.offset().top;
             const windowBottom = $(window).scrollTop() + $(window).height();
@@ -447,6 +448,7 @@ $(document).ready(function () {
     }
 
     $(window).on('scroll resize', lazyLoadImages);
+    $('#heritageCarousel').on('slid.bs.carousel', lazyLoadImages);
     lazyLoadImages();
 
 
