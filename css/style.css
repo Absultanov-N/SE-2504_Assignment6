@@ -244,6 +244,8 @@ h1 {
 
 .hero-heading {
     text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 h2 {
