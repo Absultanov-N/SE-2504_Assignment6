@@ -72,7 +72,7 @@ $(document).ready(function () {
     });
 
     // Task 3: Search Highlighting in FAQ
-    $('#faqSearchInput').on('keyup', function () {
+    $('#faqSearchInput').on('input', function () {
         const keyword = $(this).val().trim();
         const $faqContainer = $('.faq-container');
 
@@ -164,6 +164,7 @@ $(document).ready(function () {
             }
         }
     });
+    $(window).trigger('scroll');
 
     // Task 6: Loading Spinner on Submit (Forms)
     $('#subscriptionForm, #contactForm').on('submit', function (e) {

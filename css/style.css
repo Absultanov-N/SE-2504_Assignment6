@@ -242,6 +242,10 @@ h1 {
     letter-spacing: 0;
 }
 
+.hero-heading {
+    text-align: center;
+}
+
 h2 {
     margin: 0 0 0.9rem;
     font-size: 1.65rem;
